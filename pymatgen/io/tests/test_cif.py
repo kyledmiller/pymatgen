@@ -2,7 +2,6 @@
 # Copyright (c) Pymatgen Development Team.
 # Distributed under the terms of the MIT License.
 
-
 import unittest
 import warnings
 
@@ -502,6 +501,17 @@ loop_
   O  O4  4  0.09664244  0.25000000  0.74132035  1"""
         for l1, l2 in zip(str(writer).split("\n"), ans.split("\n")):
             self.assertEqual(l1.strip(), l2.strip())
+
+    def test_CifWriter_angle_tolerance(self):
+        filepath = self.TEST_FILES_DIR / 'POSCAR.BaCoS2'
+        poscar = Poscar.from_file(filepath)
+        writers = [CifWriter(poscar.structure, symprec=sp, angle_tolerance=at) \
+                   for sp, at in [(None, None), (None, 10), (0.01, None), 
+                                  (0.01, 0), (0.01, 0.1), (0.01, 100)]]
+        ans = ''
+        for writer in writers: print(str(writer.split("\n")))          
+#        for l1, l2 in zip(str(writer).split("\n"), ans.split("\n")):
+#            self.assertEqual(l1.strip(), l2.strip())
 
     def test_symmetrized(self):
         filepath = self.TEST_FILES_DIR / 'POSCAR'
